@@ -42,6 +42,12 @@
             "link": "https://www.youtube.com/watch?v=HxBaouBLOC0",
             "percent": 100,
             "hz": 360
+        },
+        {
+            "user": "nt2d",
+            "link": "https://www.youtube.com/watch?v=b0yILwsOy4k",
+            "percent": 100,
+            "hz": 240
         }
     ]
 }
