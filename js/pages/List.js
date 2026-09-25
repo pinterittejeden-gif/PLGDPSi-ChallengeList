@@ -83,7 +83,7 @@ export default {
                             </td>
                             <td class="mobile">
                                 <span v-if="record.mobile" class="mobile-badge">
-                                    <img :src="\`/assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`" alt="">
+                                    <img :src="\`assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`" alt="">
                                     MOBILE
                                 </span>
                             </td>
@@ -119,7 +119,7 @@ export default {
                         </div>
                         <ol class="editors">
                             <li v-for="editor in editors">
-                                <img :src="\`/assets/\${roleIconMap[editor.role]}\${store.dark ? '-dark' : ''}.svg\`" :alt="editor.role">
+                                <img :src="\`assets/\${roleIconMap[editor.role]}\${store.dark ? '-dark' : ''}.svg\`" :alt="editor.role">
                                 <a v-if="editor.link" class="type-label-lg link" target="_blank" :href="editor.link">{{ editor.name }}</a>
                                 <p v-else>{{ editor.name }}</p>
                             </li>

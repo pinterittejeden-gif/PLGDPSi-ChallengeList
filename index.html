@@ -20,31 +20,31 @@
         <title>PLGDPSi Challenge List - ranking społeczności</title>
 
         <!-- Replace your server icon by uploading an image file named "list_icon.png"-->
-        <link rel="icon" href="/ikonka_listy.png" />
+        <link rel="icon" href="ikonka_listy.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" type="text/css" href="/css/reset.css" />
-        <link rel="stylesheet" type="text/css" href="/css/typography.css" />
-        <link rel="stylesheet" type="text/css" href="/css/main.css" />
-        <link rel="stylesheet" type="text/css" href="/css/pages/list.css" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/typography.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/pages/list.css" />
         <link
             rel="stylesheet"
             type="text/css"
-            href="/css/pages/leaderboard.css"
+            href="css/pages/leaderboard.css"
         />
-        <link rel="stylesheet" type="text/css" href="/css/components/nav.css" />
+        <link rel="stylesheet" type="text/css" href="css/components/nav.css" />
         <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
         <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
-        <script type="module" src="/js/main.js"></script>
+        <script type="module" src="js/main.js"></script>
     </head>
     <body id="app">
         <header :class="{ dark: store.dark }">
             <router-link class="brand" to="/" aria-label="PLGDPSi Challenge List - strona główna">
-                <img class="brand__mark" src="/ikonka_listy.png" alt="" />
+                <img class="brand__mark" src="ikonka_listy.png" alt="" />
                 <span class="brand__copy">
                     <strong>PLGDPSi</strong>
                     <small>CHALLENGELIST</small>
@@ -65,13 +65,13 @@
                         :title="store.dark ? 'Jasny motyw' : 'Ciemny motyw'"
                     >
                         <img
-                            :src="store.dark ? '/assets/light.svg' : '/assets/dark.svg'"
+                            :src="store.dark ? 'assets/light.svg' : 'assets/dark.svg'"
                             alt=""
                         />
                     </button>
                     <!-- Replace the '#' with your discord server's invite-->
                     <a class="nav__icon" href="https://discord.gg/wdyU3grpzy" target="_blank" rel="noopener" aria-label="Discord PLGDPSi">
-                        <img src="/assets/discord.svg" alt="Discord Logo" />
+                        <img src="assets/discord.svg" alt="Discord Logo" />
                     </a>
                     <!-- List record submission form, add a link to replace the '#' when putting a link to your list submission form-->
                     <a
