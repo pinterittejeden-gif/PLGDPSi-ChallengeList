@@ -27,7 +27,7 @@ export default {
                 </div>
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
-                        Ranking może być niepełny — nie udało się wczytać: {{ err.join(', ') }}
+                        Ranking może być niepełny. Nie udało się wczytać: {{ err.join(', ') }}
                     </p>
                 </div>
                 <div class="board-container">
