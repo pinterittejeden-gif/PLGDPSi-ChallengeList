@@ -9,7 +9,7 @@
     color: #a9a9af;
     transition: color 120ms ease, background-color 120ms ease;
 }
-.nav .nav__tab::after { content: ""; position: absolute; right: 0.9rem; bottom: 0.25rem; left: 0.9rem; height: 2px; background: #ff3443; transform: scaleX(0); transition: transform 120ms ease; }
+.nav .nav__tab::after { content: ""; position: absolute; right: 0.9rem; bottom: 0.25rem; left: 0.9rem; height: 2px; background: #2bd07d; transform: scaleX(0); transition: transform 120ms ease; }
 .nav .nav__tab:hover { background: #18181d; color: #fff; }
 .nav .nav__tab.router-link-active { color: #fff; }
 .nav .nav__tab.router-link-active::after { transform: scaleX(1); }
@@ -17,8 +17,8 @@
 .nav .nav__icon { width: 2.55rem; height: 2.55rem; padding: 0; border: 0; border-radius: 0.25rem; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .nav .nav__icon:hover { background: #1d1d22; }
 .nav .nav__icon img { width: 1.15rem; height: 1.15rem; object-fit: contain; }
-.nav .nav__cta { margin-left: 0.5rem; padding: 0.72rem 1rem; border-radius: 0.25rem; background: #d91f2c; color: #fff; white-space: nowrap; }
-.nav .nav__cta:hover { background: #f12d3b; }
+.nav .nav__cta { margin-left: 0.5rem; padding: 0.72rem 1rem; border-radius: 0.25rem; background: #0f9d58; color: #fff; white-space: nowrap; }
+.nav .nav__cta:hover { background: #16b364; }
 @media (max-width: 900px) { .nav { overflow-x: auto; scrollbar-width: none; } .nav::-webkit-scrollbar { display:none; } .nav .nav__tab { padding-inline: 0.65rem; } .nav .nav__actions { flex: 0 0 auto; } }
 @media (max-width: 720px) { .nav .nav__actions .nav__icon:last-of-type, .nav .nav__cta { display:none; } }
 @media (max-width: 480px) { .nav .nav__tab { padding-inline: 0.5rem; } .nav .nav__tab .type-label-lg { font-size: 0.78rem; } .nav .nav__icon { width: 2.35rem; } }

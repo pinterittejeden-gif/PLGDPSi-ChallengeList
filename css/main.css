@@ -9,9 +9,9 @@
     --color-on-background-faint: #969696;
     --color-border: #d1d1d1;
     --color-border-strong: #a9a9a9;
-    --color-primary: #d91f2c;
-    --color-primary-bright: #f12d3b;
-    --color-primary-soft: rgba(217, 31, 44, 0.11);
+    --color-primary: #0f9d58;
+    --color-primary-bright: #16b364;
+    --color-primary-soft: rgba(15, 157, 88, 0.11);
     --color-on-primary: #ffffff;
     --color-error: #d91f2c;
     --color-on-error: #ffffff;
@@ -33,9 +33,9 @@
     --color-on-background-faint: #696970;
     --color-border: #29292f;
     --color-border-strong: #44444c;
-    --color-primary: #d91f2c;
-    --color-primary-bright: #ff3443;
-    --color-primary-soft: rgba(255, 52, 67, 0.12);
+    --color-primary: #16b364;
+    --color-primary-bright: #2bd07d;
+    --color-primary-soft: rgba(43, 208, 125, 0.12);
     --color-on-primary: #ffffff;
     --color-error: #e12a38;
     --color-on-error: #ffffff;
@@ -71,23 +71,25 @@ header {
 .brand__mark { width: 2.65rem; height: 2.65rem; object-fit: cover; border-radius: 0.3rem; }
 .brand__copy { display: flex; flex-direction: column; line-height: 1; }
 .brand__copy strong { font-family: "Barlow Condensed", sans-serif; font-size: 1.2rem; font-weight: 800; letter-spacing: 0.02em; }
-.brand__copy small { margin-top: 0.2rem; color: #ff3443; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.19em; }
+.brand__copy small { margin-top: 0.2rem; color: #2bd07d; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.19em; }
 
 .site-banner {
     position: relative;
     z-index: 1;
     height: var(--banner-height);
     flex: 0 0 var(--banner-height);
-    background-image: linear-gradient(90deg, rgba(0,0,0,0.06), rgba(0,0,0,0.06)), url("/og.png");
-    background-position: center 43%;
-    background-size: cover;
+    background-image:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0 10px, transparent 10px 20px),
+        linear-gradient(115deg, #06291a 0%, #0f9d58 62%, #16b364 100%);
+    background-position: center;
+    background-size: auto, cover;
     border-bottom: 3px solid var(--color-primary);
 }
 .site-banner::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(0,0,0,0.2), transparent 30%, transparent 70%, rgba(0,0,0,0.2));
+    background: linear-gradient(90deg, rgba(0,0,0,0.28), transparent 35%, transparent 65%, rgba(0,0,0,0.28));
     pointer-events: none;
 }
 

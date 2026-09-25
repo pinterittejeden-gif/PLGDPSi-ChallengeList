@@ -24,7 +24,7 @@ export default {
             <div class="list-container">
                 <div class="panel-heading">
                     <div>
-                        <h2>Lista demonów</h2>
+                        <h2>Lista wyzwań</h2>
                     </div>
                     <span class="count-pill">{{ list?.length || 0 }} LEVELI</span>
                 </div>
@@ -107,8 +107,8 @@ export default {
                         <p class="error" v-for="error of errors">{{ error }}</p>
                     </div>
                     <div class="og">
-                        <h3>PLGDPSi Demonlist</h3>
-                        <p class="type-label-md">Archiwum najtrudniejszych leveli i zweryfikowanych runów społeczności.</p>
+                        <h3>PLGDPSi Challenge List</h3>
+                        <p class="type-label-md">Lista wyzwań i zweryfikowanych runów społeczności PLGDPSi.</p>
                     </div>
                     <template v-if="editors">
                         <div class="section-heading compact">
