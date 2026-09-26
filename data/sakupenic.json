@@ -6,5 +6,12 @@
     "verifier": "Bukaj5",
     "verification": "https://youtu.be/r7XxvK3wsdw",
     "percentToQualify": 81,
-    "records": []
+    "records": [
+        {
+            "user": "KPC",
+            "link": "https://youtu.be/Y4SuWzp1JrM",
+            "percent": 100,
+            "hz": 360
+        }
+    ]
 }
