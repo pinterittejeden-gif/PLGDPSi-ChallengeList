@@ -6,5 +6,12 @@
     "verifier": "gulkap",
     "verification": "https://youtu.be/9utoFTUkQC0",
     "percentToQualify": null,
-    "records": []
+    "records": [
+        {
+            "user": "shad0w",
+            "link": "https://youtu.be/x4C_c3BvXIE",
+            "percent": 100,
+            "hz": 360
+        }
+    ]
 }
