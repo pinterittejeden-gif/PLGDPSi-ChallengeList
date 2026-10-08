@@ -16,9 +16,9 @@
     z-index: 38;
 }
 .nav__tm-pop {
-    position: absolute;
-    top: calc(100% + 0.6rem);
-    right: 0;
+    position: fixed;
+    top: 4.9rem;
+    right: 1rem;
     z-index: 40;
     width: 17rem;
     padding: 0.9rem;
@@ -113,4 +113,14 @@
     font-size: 0.85rem;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
     cursor: pointer;
+}
+@media (max-width: 720px) {
+    .nav .nav__actions .nav__tm-toggle:last-of-type {
+        display: flex;
+    }
+    .nav__tm-pop {
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+    }
 }
