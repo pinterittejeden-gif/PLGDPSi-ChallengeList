@@ -2,7 +2,6 @@ import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score } from "../score.js";
 import { fetchEditors, fetchList } from "../content.js";
-import { resolveRefForDate } from "../timemachine.js";
 
 import Spinner from "../components/Spinner.js";
 import LevelAuthors from "../components/List/LevelAuthors.js";
@@ -28,20 +27,6 @@ export default {
                         <h2>Lista</h2>
                     </div>
                     <span class="count-pill">{{ list?.length || 0 }} LEVELI</span>
-                </div>
-                <div class="timemachine" :class="{ active: activeDate }">
-                    <div class="timemachine__head">
-                        <span class="timemachine__title">Time Machine</span>
-                        <span class="timemachine__badge" v-if="activeDate">widok z {{ activeDate }}</span>
-                    </div>
-                    <div class="timemachine__row">
-                        <input type="date" class="timemachine__input" v-model="tmDate" :max="today" aria-label="Data" />
-                        <button class="timemachine__go" @click="applyTimeMachine" :disabled="!tmDate || tmLoading">
-                            {{ tmLoading ? "Wczytuję..." : "Pokaż listę z dnia" }}
-                        </button>
-                    </div>
-                    <button class="timemachine__reset" v-if="activeDate" @click="resetTimeMachine">Wróć do teraz</button>
-                    <p class="timemachine__error" v-if="tmError">{{ tmError }}</p>
                 </div>
                 <table class="list" v-if="list">
                     <tr v-for="([level, err], i) in list" :class="{ podium: i < 3 }">
@@ -164,19 +149,12 @@ export default {
         loading: true,
         selected: 0,
         errors: [],
-        tmDate: "",
-        tmLoading: false,
-        tmError: "",
-        activeDate: null,
         roleIconMap,
         store
     }),
     computed: {
         level() {
             return this.list?.[this.selected]?.[0] || null;
-        },
-        today() {
-            return new Date().toISOString().slice(0, 10);
         },
         video() {
             if (!this.level.showcase) {
@@ -190,67 +168,39 @@ export default {
             );
         },
     },
+    watch: {
+        "store.tm.ref"() {
+            this.loadForRef(store.tm.ref);
+        },
+    },
     async mounted() {
-        // Hide loading spinner
-        this.list = await fetchList();
-        this.editors = await fetchEditors();
-
-        // Error handling
-        if (!this.list) {
-            this.errors = [
-                "Failed to load list. Retry in a few minutes or notify list staff.",
-            ];
-        } else {
-            this.errors.push(
-                ...this.list
-                    .filter(([_, err]) => err)
-                    .map(([_, err]) => {
-                        return `Failed to load level. (${err}.json)`;
-                    })
-            );
-            if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
-            }
-        }
-
-        this.loading = false;
+        await this.loadForRef(store.tm.ref);
     },
     methods: {
         embed,
         score,
-        async applyTimeMachine() {
-            if (!this.tmDate) return;
-            this.tmLoading = true;
-            this.tmError = "";
+        async loadForRef(ref) {
+            this.loading = true;
             try {
-                const { sha } = await resolveRefForDate(this.tmDate);
-                const [list, editors] = await Promise.all([fetchList(sha), fetchEditors(sha)]);
-                if (!list) throw new Error("Nie udało się wczytać listy z tego dnia.");
+                const [list, editors] = await Promise.all([fetchList(ref), fetchEditors(ref)]);
+                if (!list) {
+                    this.list = null;
+                    this.errors = [
+                        "Failed to load list. Retry in a few minutes or notify list staff.",
+                    ];
+                    return;
+                }
                 this.list = list;
                 if (editors) this.editors = editors;
                 this.selected = 0;
                 this.errors = list
                     .filter(([, err]) => err)
-                    .map(([, err]) => `Nie wczytano levelu (${err}.json).`);
-                this.activeDate = this.tmDate;
-            } catch (error) {
-                this.tmError = String(error?.message || error);
+                    .map(([, err]) => `Failed to load level. (${err}.json)`);
+                if (!editors) {
+                    this.errors.push("Failed to load list editors.");
+                }
             } finally {
-                this.tmLoading = false;
-            }
-        },
-        async resetTimeMachine() {
-            this.tmLoading = true;
-            this.tmError = "";
-            try {
-                this.list = await fetchList();
-                this.editors = await fetchEditors();
-                this.selected = 0;
-                this.errors = [];
-                this.activeDate = null;
-                this.tmDate = "";
-            } finally {
-                this.tmLoading = false;
+                this.loading = false;
             }
         },
     },

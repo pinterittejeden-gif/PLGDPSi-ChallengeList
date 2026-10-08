@@ -74,6 +74,21 @@
                     <a class="nav__icon" href="https://discord.gg/plgdps" target="_blank" rel="noopener" aria-label="Discord PLGDPSi">
                         <img src="assets/discord.svg" alt="Discord Logo" />
                     </a>
+                    <div class="nav__tm" :class="{ active: store.tm.activeDate }">
+                        <input
+                            type="date"
+                            class="nav__tm-input"
+                            v-model="store.tm.date"
+                            :min="store.tm.min"
+                            :max="today"
+                            aria-label="Time Machine"
+                            :title="store.tm.min ? 'Nie da się cofnąć przed ' + store.tmMinLabel() + ' (dzień powstania listy)' : 'Time Machine'"
+                        />
+                        <button class="nav__tm-go" @click="store.tmApply()" :disabled="!store.tm.date || store.tm.loading" title="Pokaż listę z wybranego dnia">
+                            {{ store.tm.loading ? "…" : "Cofnij listę" }}
+                        </button>
+                        <button v-if="store.tm.activeDate" class="nav__tm-reset" @click="store.tmReset()" :title="'Widok z ' + store.tm.activeDate + ' - wróć do teraz'">✕</button>
+                    </div>
                     <!-- List record submission form, add a link to replace the '#' when putting a link to your list submission form-->
                     <a
                         class="nav__cta type-label-lg"
@@ -85,6 +100,7 @@
                 </div>
             </nav>
         </header>
+        <div class="tm-toast" v-if="store.tm.error" @click="store.tm.error = ''">{{ store.tm.error }}</div>
         <div class="site-banner" role="img" aria-label="Polish GDPS Infinity"></div>
         <router-view :class="{ dark: store.dark }"></router-view>
     </body>

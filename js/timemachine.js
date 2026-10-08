@@ -6,6 +6,14 @@ export const REPO = {
     branch: "main",
 };
 
+// Dzien powstania listy. Wczesniej repo dziedziczy dane demonlisty, wiec blokujemy te daty.
+export const CREATED = "2026-09-25";
+
+function formatDay(value) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || "");
+    return match ? `${match[3]}.${match[2]}.${match[1]}` : (value || "");
+}
+
 const apiBase = `https://api.github.com/repos/${REPO.owner}/${REPO.name}`;
 const rawBase = `https://raw.githubusercontent.com/${REPO.owner}/${REPO.name}`;
 
@@ -13,9 +21,41 @@ export function rawDirForRef(ref) {
     return `${rawBase}/${ref}/data`;
 }
 
+// Data pierwszego commita listy (dzien powstania listy) - najwczesniejsza mozliwa data.
+export async function resolveEarliestDate() {
+    const url = `${apiBase}/commits?path=${encodeURIComponent("data/_list.json")}&sha=${encodeURIComponent(REPO.branch)}&per_page=1`;
+    let response;
+    try {
+        response = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+    } catch {
+        return null;
+    }
+    if (!response.ok) return null;
+    const link = response.headers.get("link") || "";
+    const lastMatch = /<([^>]+)>;\s*rel="last"/.exec(link);
+    let commits = await response.json();
+    if (lastMatch) {
+        try {
+            const lastResponse = await fetch(lastMatch[1], { headers: { Accept: "application/vnd.github+json" } });
+            if (lastResponse.ok) commits = await lastResponse.json();
+        } catch {
+            // zostaje pierwsza strona
+        }
+    }
+    const oldest = Array.isArray(commits) && commits.length ? commits[commits.length - 1] : null;
+    const date = oldest?.commit?.committer?.date || oldest?.commit?.author?.date || null;
+    const first = date ? String(date).slice(0, 10) : null;
+    if (CREATED) return first && first > CREATED ? first : CREATED;
+    return first;
+}
+
 // Znajduje commit listy najblizszy podanej dacie (YYYY-MM-DD).
 export async function resolveRefForDate(dateString) {
-    const until = `${String(dateString).trim()}T23:59:59Z`;
+    const day = String(dateString).trim();
+    if (CREATED && day < CREATED) {
+        throw new Error(`Lista powstała ${formatDay(CREATED)} - nie da się cofnąć wcześniej.`);
+    }
+    const until = `${day}T23:59:59Z`;
     const url = `${apiBase}/commits?path=${encodeURIComponent("data/_list.json")}&sha=${encodeURIComponent(REPO.branch)}&until=${encodeURIComponent(until)}&per_page=1`;
     let response;
     try {
