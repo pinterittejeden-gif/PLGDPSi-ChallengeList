@@ -22,6 +22,7 @@ export const store = Vue.reactive({
         activeDate: null,
         loading: false,
         error: "",
+        open: false,
     },
     tmMinLabel() {
         return formatDate(this.tm.min);
@@ -39,6 +40,7 @@ export const store = Vue.reactive({
             const { sha } = await resolveRefForDate(tm.date);
             tm.ref = sha;
             tm.activeDate = tm.date;
+            tm.open = false;
         } catch (error) {
             tm.error = String(error?.message || error);
         } finally {

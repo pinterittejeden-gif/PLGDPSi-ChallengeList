@@ -74,20 +74,32 @@
                     <a class="nav__icon" href="https://discord.gg/plgdps" target="_blank" rel="noopener" aria-label="Discord PLGDPSi">
                         <img src="assets/discord.svg" alt="Discord Logo" />
                     </a>
-                    <div class="nav__tm" :class="{ active: store.tm.activeDate }">
-                        <input
-                            type="date"
-                            class="nav__tm-input"
-                            v-model="store.tm.date"
-                            :min="store.tm.min"
-                            :max="today"
+                    <div class="nav__tm-wrap">
+                        <button
+                            class="nav__icon nav__tm-toggle"
+                            :class="{ active: store.tm.activeDate }"
+                            @click="store.tm.open = !store.tm.open"
                             aria-label="Time Machine"
-                            :title="store.tm.min ? 'Nie da się cofnąć przed ' + store.tmMinLabel() + ' (dzień powstania listy)' : 'Time Machine'"
-                        />
-                        <button class="nav__tm-go" @click="store.tmApply()" :disabled="!store.tm.date || store.tm.loading" title="Pokaż listę z wybranego dnia">
-                            {{ store.tm.loading ? "…" : "Cofnij listę" }}
+                            title="Time Machine - pokaż listę z wybranego dnia"
+                        >
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M12 7.5V12l3.2 1.9"></path>
+                            </svg>
                         </button>
-                        <button v-if="store.tm.activeDate" class="nav__tm-reset" @click="store.tmReset()" :title="'Widok z ' + store.tm.activeDate + ' - wróć do teraz'">✕</button>
+                        <div class="nav__tm-backdrop" v-if="store.tm.open" @click="store.tm.open = false"></div>
+                        <div class="nav__tm-pop" v-if="store.tm.open">
+                            <div class="nav__tm-pop-head">
+                                <span class="nav__tm-pop-title">Time Machine</span>
+                                <button class="nav__tm-pop-close" @click="store.tm.open = false" aria-label="Zamknij">✕</button>
+                            </div>
+                            <input type="date" class="nav__tm-input" v-model="store.tm.date" :min="store.tm.min" :max="today" aria-label="Data" />
+                            <button class="nav__tm-go" @click="store.tmApply()" :disabled="!store.tm.date || store.tm.loading">
+                                {{ store.tm.loading ? "Wczytuję…" : "Pokaż listę z dnia" }}
+                            </button>
+                            <p class="nav__tm-hint" v-if="store.tm.min">Nie da się cofnąć przed {{ store.tmMinLabel() }} (dzień powstania listy).</p>
+                            <button class="nav__tm-reset" v-if="store.tm.activeDate" @click="store.tmReset()">Wróć do teraz</button>
+                        </div>
                     </div>
                     <!-- List record submission form, add a link to replace the '#' when putting a link to your list submission form-->
                     <a
