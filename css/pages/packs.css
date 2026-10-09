@@ -1,3 +1,9 @@
+.tier-pyl { --tier: #9aa3b2; }
+.tier-kometa { --tier: #4aa3ff; }
+.tier-gwiazda { --tier: #f2c14e; }
+.tier-kolos { --tier: #f0653a; }
+.tier-otchlan { --tier: #a24bff; }
+
 .page-packs {
     height: calc(100vh - var(--header-height) - var(--banner-height));
     max-width: 96rem;
@@ -17,20 +23,35 @@
     border-right: 1px solid var(--color-border);
 }
 .page-packs .panel-heading {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--color-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
 }
 .page-packs .pack-tier {
-    margin: 1.1rem 0 0.4rem;
-    font-size: 0.72rem;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    margin: 1.2rem 0 0.5rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.3rem;
+    font-size: 0.74rem;
+    font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--color-primary-bright);
+    color: #0b0b0d;
+    background: var(--tier, #888);
+    box-shadow: 0 4px 16px -8px var(--tier, #888);
+}
+.page-packs .tier-dot {
+    width: 0.65rem;
+    height: 0.65rem;
+    margin-right: 0.55rem;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--tier, #888);
+    box-shadow: 0 0 8px var(--tier, #888);
 }
 .page-packs .list {
     width: 100%;
@@ -60,6 +81,9 @@
     background: var(--color-primary);
     color: #fff;
 }
+.page-packs .list tr.active .tier-dot {
+    box-shadow: none;
+}
 .page-packs .list .rank {
     width: 5rem;
     padding-right: 0.65rem;
@@ -73,6 +97,18 @@
     display: flex;
     flex-direction: column;
     gap: 1.1rem;
+}
+.page-packs .pack h1 {
+    border-bottom: 2px solid var(--tier, var(--color-border-strong));
+    padding-bottom: 0.4rem;
+}
+.page-packs .pack .tier-badge {
+    background: var(--tier, #888);
+    border-color: var(--tier, #888);
+    color: #0b0b0d;
+}
+.page-packs .level-kicker {
+    color: var(--tier, var(--color-on-background-muted));
 }
 .page-packs .pack-placeholder {
     height: 100%;
@@ -102,9 +138,29 @@
     white-space: nowrap;
 }
 .page-packs .pack-victors {
+    list-style: none;
     margin: 0;
-    padding-left: 1.2rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+.page-packs .pack-victors a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.32rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border-strong);
+    background: var(--color-background-elevated);
     color: var(--color-on-background);
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-decoration: none;
+    transition: border-color 120ms ease, color 120ms ease;
+}
+.page-packs .pack-victors a:hover {
+    border-color: var(--tier, var(--color-primary));
+    color: var(--tier, var(--color-primary-bright));
 }
 .page-packs .pack-empty {
     color: var(--color-on-background-muted);

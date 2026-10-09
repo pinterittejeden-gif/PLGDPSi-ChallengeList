@@ -17,11 +17,12 @@ export default {
                     <span class="count-pill">{{ packs.length }} PACKÓW</span>
                 </div>
                 <template v-for="tier in orderedTiers" :key="tier.key">
-                    <div class="pack-tier">{{ tier.name }}</div>
+                    <div class="pack-tier" :class="'tier-' + tier.key">{{ tier.name }}</div>
                     <table class="list">
                         <tr v-for="pack in packsByTier(tier.key)" :class="{ active: selected === pack.id }">
                             <td class="level">
                                 <button @click="selected = pack.id">
+                                    <span class="tier-dot" :class="'tier-' + pack.tier"></span>
                                     <span class="type-label-lg">{{ pack.name }}</span>
                                 </button>
                             </td>
@@ -32,9 +33,9 @@ export default {
                 <p v-if="!packs.length" class="pack-empty">Nie ma jeszcze żadnych packów.</p>
             </div>
             <div class="packs-detail">
-                <div v-if="pack" class="pack">
+                <div v-if="pack" class="pack" :class="'tier-' + pack.tier">
                     <div class="level-kicker">
-                        <span class="rank-badge">{{ pack.tierName || pack.tier }}</span>
+                        <span class="rank-badge tier-badge">{{ pack.tierName || pack.tier }}</span>
                         <span>{{ pack.points }} PKT</span>
                     </div>
                     <h1>{{ pack.name }}</h1>
