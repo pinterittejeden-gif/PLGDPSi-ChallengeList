@@ -108,7 +108,7 @@ export default {
                     </div>
                     <div class="og">
                         <h3>PLGDPSi Challenge List</h3>
-                        <p class="type-label-md">Challenge i ich rekordy.</p>
+                        <p class="type-label-md">Challenge levele i rekordy graczy PLGDPSi.</p>
                     </div>
                     <template v-if="editors">
                         <div class="section-heading compact">
