@@ -45,7 +45,7 @@ export default {
                     <table class="pack-levels">
                         <tr v-for="lvl in packLevels">
                             <td class="pos">#{{ lvl.rank }}</td>
-                            <td class="name"><a :href="lvl.link" target="_blank" rel="noopener">{{ lvl.name }}</a></td>
+                            <td class="name"><router-link :to="{ path: '/', query: { level: lvl.path } }">{{ lvl.name }}</router-link></td>
                             <td class="pts">+{{ lvl.points }}</td>
                         </tr>
                     </table>
@@ -93,6 +93,7 @@ export default {
                 const level = index >= 0 ? this.list[index][0] : null;
                 return {
                     name: level ? level.name : path,
+                    path,
                     rank: index + 1,
                     points: index >= 0 ? listPoints(index + 1, total) : 0,
                     link: level ? level.verification : "#",

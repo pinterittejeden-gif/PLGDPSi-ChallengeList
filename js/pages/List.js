@@ -50,7 +50,7 @@ export default {
                     </div>
                     <h1>{{ level.name }}</h1>
                     <div class="level-packs" v-if="currentPacks.length">
-                        <router-link v-for="p in currentPacks" :key="p.id" class="pack-tag" :to="{ path: '/packs', query: { pack: p.id } }">{{ p.name }}</router-link>
+                        <router-link v-for="p in currentPacks" :key="p.id" class="pack-tag" :class="'tier-' + p.tier" :to="{ path: '/packs', query: { pack: p.id } }">{{ p.name }}</router-link>
                     </div>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
                     <div class="video-shell">
@@ -183,6 +183,11 @@ export default {
     },
     async mounted() {
         await this.loadForRef(store.tm.ref);
+        const wanted = this.$route.query.level;
+        if (wanted) {
+            const index = (this.list || []).findIndex(([level]) => level && level.path === String(wanted));
+            if (index >= 0) this.selected = index;
+        }
     },
     methods: {
         embed,
