@@ -122,7 +122,9 @@ export default {
     },
     methods: {
         packsByTier(key) {
-            return this.packs.filter((pack) => pack.tier === key);
+            return this.packs
+                .filter((pack) => pack.tier === key)
+                .sort((a, b) => (Number(a.points) || 0) - (Number(b.points) || 0));
         },
     },
     async mounted() {
