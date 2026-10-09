@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T14:33:47.261Z",
+  "updatedAt": "2026-10-09T14:34:44.601Z",
   "tiers": [
     {
       "key": "pyl",
@@ -34,6 +34,18 @@
         "aeternical",
         "hyperzyniak",
         "sakupenic"
+      ]
+    },
+    {
+      "id": "packmv12gqr5",
+      "name": "Spam Pack",
+      "tier": "kolos",
+      "tierName": "Kolos",
+      "points": 177.8,
+      "levels": [
+        "hyperzyniak",
+        "nitrozyniak",
+        "spasiba_wave"
       ]
     }
   ]
