@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-09T13:31:59.608Z",
+  "tiers": [
+    {
+      "key": "pyl",
+      "name": "Pył"
+    },
+    {
+      "key": "kometa",
+      "name": "Kometa"
+    },
+    {
+      "key": "gwiazda",
+      "name": "Gwiazda"
+    },
+    {
+      "key": "kolos",
+      "name": "Kolos"
+    },
+    {
+      "key": "otchlan",
+      "name": "Otchłań"
+    }
+  ],
+  "packs": [
+    {
+      "id": "packpodiumpack",
+      "name": "Podium Pack",
+      "tier": "otchlan",
+      "tierName": "Otchłań",
+      "points": 529.4,
+      "levels": [
+        "nitrozyniak",
+        "aeternical",
+        "hubert_challaenge"
+      ]
+    },
+    {
+      "id": "packtop5pack",
+      "name": "Top 5 Pack",
+      "tier": "otchlan",
+      "tierName": "Otchłań",
+      "points": 648,
+      "levels": [
+        "nitrozyniak",
+        "aeternical",
+        "hubert_challaenge",
+        "fun_cat_sim",
+        "spasiba_wave"
+      ]
+    },
+    {
+      "id": "packmidpack",
+      "name": "Mid Pack",
+      "tier": "gwiazda",
+      "tierName": "Gwiazda",
+      "points": 146.4,
+      "levels": [
+        "fun_cat_sim",
+        "spasiba_wave",
+        "disco_ball"
+      ]
+    },
+    {
+      "id": "packstarterpack",
+      "name": "Starter Pack",
+      "tier": "pyl",
+      "tierName": "Pył",
+      "points": 22.1,
+      "levels": [
+        "hyperzyniak",
+        "wave_in_heaven",
+        "sakupenic"
+      ]
+    },
+    {
+      "id": "packbukaj5pack",
+      "name": "Bukaj5 Pack",
+      "tier": "gwiazda",
+      "tierName": "Gwiazda",
+      "points": 183.5,
+      "levels": [
+        "aeternical",
+        "hyperzyniak",
+        "sakupenic"
+      ]
+    },
+    {
+      "id": "packmemepack",
+      "name": "Meme Pack",
+      "tier": "kometa",
+      "tierName": "Kometa",
+      "points": 100.9,
+      "levels": [
+        "fun_cat_sim",
+        "disco_ball",
+        "sakupenic"
+      ]
+    }
+  ]
+}
