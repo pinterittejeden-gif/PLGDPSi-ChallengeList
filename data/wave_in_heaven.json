@@ -1,17 +1,17 @@
 {
-    "id": 1817,
-    "name": "wave in heaven",
-    "author": "simonXD",
-    "creators": [],
-    "verifier": "simonXD",
-    "verification": "https://www.youtube.com/watch?v=YmqAfTU_ge0",
-    "percentToQualify": 72,
-    "records": [
-        {
-            "user": "KPC",
-            "link": "https://youtu.be/EAmQp3cKDww",
-            "percent": 100,
-            "hz": 360
-        }
-    ]
+  "id": 1817,
+  "name": "wave in heaven",
+  "author": "simonxd",
+  "creators": [],
+  "verifier": "simonxd",
+  "verification": "https://www.youtube.com/watch?v=YmqAfTU_ge0",
+  "percentToQualify": 72,
+  "records": [
+    {
+      "user": "kpc",
+      "link": "https://youtu.be/EAmQp3cKDww",
+      "percent": 100,
+      "hz": 360
+    }
+  ]
 }

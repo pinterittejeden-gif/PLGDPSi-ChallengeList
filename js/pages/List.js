@@ -50,7 +50,7 @@ export default {
                     </div>
                     <h1>{{ level.name }}</h1>
                     <div class="level-packs" v-if="currentPacks.length">
-                        <router-link v-for="p in currentPacks" :key="p.id" class="pack-tag" to="/packs">{{ p.name }}</router-link>
+                        <router-link v-for="p in currentPacks" :key="p.id" class="pack-tag" :to="{ path: '/packs', query: { pack: p.id } }">{{ p.name }}</router-link>
                     </div>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
                     <div class="video-shell">
