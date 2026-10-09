@@ -1,4 +1,4 @@
-import { round, score } from './score.js';
+import { round, listPoints } from './score.js';
 import { rawDirForRef } from './timemachine.js';
 
 /**
@@ -49,79 +49,112 @@ export async function fetchEditors(ref = null) {
     }
 }
 
-export async function fetchLeaderboard(ref = null) {
-    const list = await fetchList(ref);
+export async function fetchPacks(ref = null) {
+    const base = ref ? rawDirForRef(ref) : dir;
+    try {
+        const result = await fetch(`${base}/_packs.json`);
+        if (!result.ok) return { tiers: [], packs: [] };
+        const data = await result.json();
+        return {
+            tiers: Array.isArray(data?.tiers) ? data.tiers : [],
+            packs: Array.isArray(data?.packs) ? data.packs : [],
+        };
+    } catch {
+        return { tiers: [], packs: [] };
+    }
+}
 
-    const scoreMap = {};
+export async function fetchLeaderboard(ref = null) {
+    const [list, packsData] = await Promise.all([fetchList(ref), fetchPacks(ref)]);
     const errs = [];
-    list.forEach(([level, err], rank) => {
+    const total = list ? list.length : 0;
+    const scoreMap = {};
+
+    (list || []).forEach(([level, err], rank) => {
         if (err) {
             errs.push(err);
             return;
         }
 
-        // Verification
-        const verifier = Object.keys(scoreMap).find(
-            (u) => u.toLowerCase() === level.verifier.toLowerCase(),
-        ) || level.verifier;
-        scoreMap[verifier] ??= {
-            verified: [],
-            completed: [],
-            progressed: [],
+        const full = listPoints(rank + 1, total);
+        const minPercent = Number(level.percentToQualify) || 1;
+        const entryFor = (name) => {
+            const key = Object.keys(scoreMap).find((u) => u.toLowerCase() === name.toLowerCase()) || name;
+            scoreMap[key] ??= { verified: [], completed: [], progressed: [], packList: [] };
+            return scoreMap[key];
         };
-        const { verified } = scoreMap[verifier];
-        verified.push({
+
+        entryFor(level.verifier).verified.push({
             rank: rank + 1,
             level: level.name,
-            score: score(rank + 1, 100, level.percentToQualify),
+            score: full,
             link: level.verification,
+            path: level.path,
         });
 
-        // Records
         level.records.forEach((record) => {
-            const user = Object.keys(scoreMap).find(
-                (u) => u.toLowerCase() === record.user.toLowerCase(),
-            ) || record.user;
-            scoreMap[user] ??= {
-                verified: [],
-                completed: [],
-                progressed: [],
-            };
-            const { completed, progressed } = scoreMap[user];
+            const entry = entryFor(record.user);
             if (record.percent === 100) {
-                completed.push({
+                entry.completed.push({
                     rank: rank + 1,
                     level: level.name,
-                    score: score(rank + 1, 100, level.percentToQualify),
+                    score: full,
                     link: record.link,
+                    path: level.path,
                 });
                 return;
             }
-
-            progressed.push({
+            const factor = (record.percent - (minPercent - 1)) / (100 - (minPercent - 1));
+            entry.progressed.push({
                 rank: rank + 1,
                 level: level.name,
                 percent: record.percent,
-                score: score(rank + 1, record.percent, level.percentToQualify),
+                score: round(Math.max(0, full * factor * (2 / 3))),
                 link: record.link,
+                path: level.path,
             });
         });
     });
 
-    // Wrap in extra Object containing the user and total score
-    const res = Object.entries(scoreMap).map(([user, scores]) => {
-        const { verified, completed, progressed } = scores;
-        const total = [verified, completed, progressed]
-            .flat()
-            .reduce((prev, cur) => prev + cur.score, 0);
+    // Levely ukonczone przez kazdego gracza (do packow)
+    const completedPaths = {};
+    Object.entries(scoreMap).forEach(([user, scores]) => {
+        const set = new Set();
+        scores.verified.forEach((v) => set.add(v.path));
+        scores.completed.forEach((c) => set.add(c.path));
+        completedPaths[user] = set;
+    });
 
+    const packs = packsData.packs;
+    Object.entries(scoreMap).forEach(([user, scores]) => {
+        const set = completedPaths[user];
+        packs.forEach((pack) => {
+            if (!Array.isArray(pack.levels) || pack.levels.length === 0) return;
+            if (pack.levels.every((p) => set.has(p))) {
+                scores.packList.push({
+                    name: pack.name,
+                    tier: pack.tierName || pack.tier,
+                    points: Number(pack.points) || 0,
+                });
+            }
+        });
+    });
+
+    const res = Object.entries(scoreMap).map(([user, scores]) => {
+        const { verified, completed, progressed, packList } = scores;
+        const levelTotal = [...verified, ...completed, ...progressed].reduce((prev, cur) => prev + cur.score, 0);
+        const packTotal = packList.reduce((prev, cur) => prev + cur.points, 0);
         return {
             user,
-            total: round(total),
-            ...scores,
+            total: round(levelTotal + packTotal),
+            levelTotal: round(levelTotal),
+            packTotal: round(packTotal),
+            verified,
+            completed,
+            progressed,
+            packs: packList,
         };
     });
 
-    // Sort by total score
     return [res.sort((a, b) => b.total - a.total), errs];
 }

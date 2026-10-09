@@ -106,6 +106,16 @@ export default {
                                 </td>
                             </tr>
                         </table>
+                        <div class="section-heading" v-if="entry.packs.length > 0">
+                            <div><span class="eyebrow">PACKI</span><h2>Ukończone packi</h2></div>
+                            <span class="count-pill">{{ entry.packs.length }}</span>
+                        </div>
+                        <table class="table" v-if="entry.packs.length > 0">
+                            <tr v-for="pack in entry.packs">
+                                <td class="user"><p class="type-label-lg">{{ pack.name }}</p></td>
+                                <td class="score"><p>+{{ localize(pack.points) }}</p></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>

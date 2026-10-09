@@ -52,3 +52,16 @@ export function round(num) {
         );
     }
 }
+
+/**
+ * Punkty listy za level na danej pozycji (wzor AREDL podzielony przez 10).
+ * top 1 = 500 pkt, ostatni = 1 pkt.
+ */
+export function listPoints(pos, count) {
+    if (count <= 1) return 500;
+    if (pos > count || pos < 1) return 0;
+    const b = (count - 1) * 0.0005832492374192;
+    const a = 6000 * Math.sqrt(b);
+    const value = a / Math.sqrt((pos - 1) / 50 + b) - 1000;
+    return Math.max(0, Math.round((value / 10) * 10) / 10);
+}

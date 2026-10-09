@@ -1,7 +1,7 @@
 import { store } from "../main.js";
 import { embed } from "../util.js";
-import { score } from "../score.js";
-import { fetchEditors, fetchList } from "../content.js";
+import { score, listPoints } from "../score.js";
+import { fetchEditors, fetchList, fetchPacks } from "../content.js";
 
 import Spinner from "../components/Spinner.js";
 import LevelAuthors from "../components/List/LevelAuthors.js";
@@ -49,6 +49,9 @@ export default {
                         <span>{{ selected + 1 <= 75 ? 'MAIN LIST' : selected + 1 <= 150 ? 'EXTENDED LIST' : 'LEGACY' }}</span>
                     </div>
                     <h1>{{ level.name }}</h1>
+                    <div class="level-packs" v-if="currentPacks.length">
+                        <router-link v-for="p in currentPacks" :key="p.id" class="pack-tag" to="/packs">{{ p.name }}</router-link>
+                    </div>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
                     <div class="video-shell">
                         <iframe class="video" id="videoframe" :src="video" title="Wideo levelu" loading="lazy" allowfullscreen></iframe>
@@ -56,7 +59,7 @@ export default {
                     <ul class="stats">
                         <li>
                             <div class="type-title-sm">Punkty za 100%</div>
-                            <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
+                            <p>{{ listPoints(selected + 1, list.length) }}</p>
                         </li>
                         <li>
                             <div class="type-title-sm">ID levelu</div>
@@ -146,6 +149,7 @@ export default {
     data: () => ({
         list: [],
         editors: [],
+        packs: [],
         loading: true,
         selected: 0,
         errors: [],
@@ -155,6 +159,10 @@ export default {
     computed: {
         level() {
             return this.list?.[this.selected]?.[0] || null;
+        },
+        currentPacks() {
+            if (!this.level) return [];
+            return this.packs.filter(pack => Array.isArray(pack.levels) && pack.levels.includes(this.level.path));
         },
         video() {
             if (!this.level.showcase) {
@@ -179,10 +187,11 @@ export default {
     methods: {
         embed,
         score,
+        listPoints,
         async loadForRef(ref) {
             this.loading = true;
             try {
-                const [list, editors] = await Promise.all([fetchList(ref), fetchEditors(ref)]);
+                const [list, editors, packsData] = await Promise.all([fetchList(ref), fetchEditors(ref), fetchPacks(ref)]);
                 if (!list) {
                     this.list = null;
                     this.errors = [
@@ -192,6 +201,7 @@ export default {
                 }
                 this.list = list;
                 if (editors) this.editors = editors;
+                this.packs = packsData.packs;
                 this.selected = 0;
                 this.errors = list
                     .filter(([, err]) => err)
