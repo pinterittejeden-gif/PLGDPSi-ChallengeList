@@ -95,7 +95,7 @@
                             </div>
                             <input type="date" class="nav__tm-input" v-model="store.tm.date" :min="store.tm.min" :max="today" aria-label="Data" />
                             <button class="nav__tm-go" @click="store.tmApply()" :disabled="!store.tm.date || store.tm.loading">
-                                {{ store.tm.loading ? "Wczytuję…" : "Pokaż listę z dnia" }}
+                                {{ store.tm.loading ? "Wczytuję..." : "Pokaż listę z dnia" }}
                             </button>
                             <p class="nav__tm-hint" v-if="store.tm.min">Nie da się cofnąć przed {{ store.tmMinLabel() }} (dzień powstania listy).</p>
                             <button class="nav__tm-reset" v-if="store.tm.activeDate" @click="store.tmReset()">Wróć do teraz</button>
