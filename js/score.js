@@ -54,14 +54,15 @@ export function round(num) {
 }
 
 /**
- * Punkty listy za level na danej pozycji (wzor AREDL podzielony przez 10).
- * top 1 = 500 pkt, ostatni = 1 pkt.
+ * Punkty listy za level na danej pozycji (lagodna krzywa wykladnicza).
+ * top 1 = 500 pkt, ostatni = 1 pkt. Im wieksze K, tym ostrzejszy spadek.
  */
+const LIST_POINT_K = 3;
 export function listPoints(pos, count) {
     if (count <= 1) return 500;
     if (pos > count || pos < 1) return 0;
-    const b = (count - 1) * 0.0005832492374192;
-    const a = 6000 * Math.sqrt(b);
-    const value = a / Math.sqrt((pos - 1) / 50 + b) - 1000;
-    return Math.max(0, Math.round((value / 10) * 10) / 10);
+    const t = (pos - 1) / (count - 1);
+    const low = Math.exp(-LIST_POINT_K);
+    const value = 1 + 499 * ((Math.exp(-LIST_POINT_K * t) - low) / (1 - low));
+    return Math.round(value * 10) / 10;
 }

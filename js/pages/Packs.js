@@ -52,7 +52,7 @@ export default {
                         <div><span class="eyebrow">VICTORS</span><h2>{{ victors.length }}</h2></div>
                     </div>
                     <ol class="pack-victors">
-                        <li v-for="v in victors">{{ v }}</li>
+                        <li v-for="v in victors"><router-link :to="{ path: '/leaderboard', query: { player: v } }">{{ v }}</router-link></li>
                     </ol>
                     <p v-if="!victors.length" class="pack-empty">Nikt jeszcze nie ukończył tego packu.</p>
                 </div>
@@ -102,14 +102,20 @@ export default {
             if (!this.pack) return [];
             const paths = this.pack.levels || [];
             const counts = {};
+            const names = {};
             this.list.forEach(([level]) => {
                 if (!level || !paths.includes(level.path)) return;
                 const done = new Set([level.verifier, ...(level.records || []).filter((r) => r.percent === 100).map((r) => r.user)]);
                 done.forEach((user) => {
-                    counts[user] = (counts[user] || 0) + 1;
+                    const key = String(user || "").toLowerCase();
+                    if (!key) return;
+                    names[key] = names[key] || user;
+                    counts[key] = (counts[key] || 0) + 1;
                 });
             });
-            return Object.keys(counts).filter((user) => counts[user] === paths.length);
+            return Object.keys(counts)
+                .filter((key) => counts[key] === paths.length)
+                .map((key) => names[key]);
         },
     },
     methods: {
@@ -122,7 +128,9 @@ export default {
         this.list = list || [];
         this.packs = packsData.packs;
         this.tiers = packsData.tiers;
-        if (this.packs.length) this.selected = this.packs[0].id;
+        const wanted = this.$route.query.pack;
+        if (wanted && this.packs.find((p) => p.id === wanted)) this.selected = wanted;
+        else if (this.packs.length) this.selected = this.packs[0].id;
         this.loading = false;
     },
 };

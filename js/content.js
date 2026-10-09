@@ -132,6 +132,7 @@ export async function fetchLeaderboard(ref = null) {
             if (!Array.isArray(pack.levels) || pack.levels.length === 0) return;
             if (pack.levels.every((p) => set.has(p))) {
                 scores.packList.push({
+                    id: pack.id,
                     name: pack.name,
                     tier: pack.tierName || pack.tier,
                     points: Number(pack.points) || 0,

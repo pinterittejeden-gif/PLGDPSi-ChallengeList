@@ -112,7 +112,7 @@ export default {
                         </div>
                         <table class="table" v-if="entry.packs.length > 0">
                             <tr v-for="pack in entry.packs">
-                                <td class="user"><p class="type-label-lg">{{ pack.name }}</p></td>
+                                <td class="user"><router-link class="type-label-lg" :to="{ path: '/packs', query: { pack: pack.id } }">{{ pack.name }}</router-link></td>
                                 <td class="score"><p>+{{ localize(pack.points) }}</p></td>
                             </tr>
                         </table>
@@ -130,6 +130,11 @@ export default {
         const [leaderboard, err] = await fetchLeaderboard();
         this.leaderboard = leaderboard;
         this.err = err;
+        const wanted = this.$route.query.player;
+        if (wanted) {
+            const index = (leaderboard || []).findIndex((e) => e.user.toLowerCase() === String(wanted).toLowerCase());
+            if (index >= 0) this.selected = index;
+        }
         // Hide loading spinner
         this.loading = false;
     },
