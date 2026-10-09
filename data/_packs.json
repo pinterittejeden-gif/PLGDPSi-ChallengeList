@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-09T14:33:47.261Z",
+  "tiers": [
+    {
+      "key": "pyl",
+      "name": "Pył"
+    },
+    {
+      "key": "kometa",
+      "name": "Kometa"
+    },
+    {
+      "key": "gwiazda",
+      "name": "Gwiazda"
+    },
+    {
+      "key": "kolos",
+      "name": "Kolos"
+    },
+    {
+      "key": "otchlan",
+      "name": "Otchłań"
+    }
+  ],
+  "packs": [
+    {
+      "id": "packmv12fniv",
+      "name": "Bukaj5 Pack",
+      "tier": "gwiazda",
+      "tierName": "Gwiazda",
+      "points": 104.9,
+      "levels": [
+        "aeternical",
+        "hyperzyniak",
+        "sakupenic"
+      ]
+    }
+  ]
+}
