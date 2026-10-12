@@ -1,7 +1,7 @@
 import { store } from "../main.js";
 import { embed } from "../util.js";
 import { score, listPoints } from "../score.js";
-import { sortTags } from "../tags.js";
+import { TAG_ORDER, sortTags } from "../tags.js";
 import { fetchEditors, fetchList, fetchPacks } from "../content.js";
 
 import Spinner from "../components/Spinner.js";
@@ -27,17 +27,26 @@ export default {
                     <div>
                         <h2>Lista</h2>
                     </div>
-                    <span class="count-pill">{{ list?.length || 0 }} LEVELI</span>
+                    <span class="count-pill">{{ viewList.length }} LEVELI</span>
+                </div>
+                <div class="tag-filter">
+                    <div class="tag-filter-head">
+                        <span>Filtruj tagami</span>
+                        <button v-if="activeTags.length" @click="activeTags = []; selected = 0">Wyczyść</button>
+                    </div>
+                    <div class="tag-filter-list">
+                        <button v-for="tag in allTags" :key="tag" class="tag-filter-btn" :class="{ active: activeTags.includes(tag) }" @click="toggleTag(tag)">{{ tag }}</button>
+                    </div>
                 </div>
                 <table class="list" v-if="list">
-                    <tr v-for="([level, err], i) in list" :class="{ podium: i < 3 }">
+                    <tr v-for="([level, err, rank], i) in viewList" :class="{ podium: rank <= 3 }">
                         <td class="rank">
-                            <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
+                            <p v-if="rank <= 150" class="type-label-lg">#{{ rank }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
                             <button @click="selected = i">
-                                <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
+                                <span class="type-label-lg">{{ level?.name || `Error (${err}.json)` }}</span>
                             </button>
                         </td>
                     </tr>
@@ -156,13 +165,24 @@ export default {
         packs: [],
         loading: true,
         selected: 0,
+        activeTags: [],
         errors: [],
         roleIconMap,
         store
     }),
     computed: {
+        allTags() {
+            return TAG_ORDER;
+        },
+        viewList() {
+            const items = (this.list || []).map(([level, err], index) => [level, err, index + 1]);
+            if (!this.activeTags.length) return items;
+            return items.filter(([level]) => level && this.activeTags.every(tag =>
+                (level.tags || []).some(item => String(item).toLowerCase() === tag.toLowerCase())
+            ));
+        },
         level() {
-            return this.list?.[this.selected]?.[0] || null;
+            return this.viewList?.[this.selected]?.[0] || null;
         },
         currentPacks() {
             if (!this.level) return [];
@@ -200,6 +220,12 @@ export default {
         embed,
         score,
         listPoints,
+        toggleTag(tag) {
+            const index = this.activeTags.findIndex(item => item.toLowerCase() === tag.toLowerCase());
+            if (index === -1) this.activeTags.push(tag);
+            else this.activeTags.splice(index, 1);
+            this.selected = 0;
+        },
         async loadForRef(ref) {
             this.loading = true;
             try {
